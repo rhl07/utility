@@ -19,7 +19,7 @@
 		<jackson-databind.version>2.8.7</jackson-databind.version>
 		<jackson.dataformat.properties.version>2.9.3</jackson.dataformat.properties.version>
 
-		<commons.fileupload.version>1.3</commons.fileupload.version>
+		<commons.fileupload.version>1.3.3</commons.fileupload.version>
 		<spring.webmvc.portlet.contrib>1.0.0</spring.webmvc.portlet.contrib>
 	</properties>
 
