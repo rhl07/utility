@@ -1,5 +1,7 @@
 package com.common.utility;
  
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -23,6 +25,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 public class URest {
 
  
+	private static final Logger log = LoggerFactory.getLogger(URest.class);
+	
 	private static RestTemplate restTemplate = null;
  
 	static void setRestTemplate(RestTemplate rest) {
@@ -46,8 +50,8 @@ public class URest {
 	
 	public <T> T getRequest(String url, Class<T> responseType,boolean infolog ) {
 		String METHOD = "getRequest()- ";
-		if(infolog){}
-			////log.info(METHOD + "Started  url " + url);
+		if(infolog)
+			log.info(METHOD + "Started  url " + url);
 		ResponseEntity<T> reponse = null;
 
 		HttpHeaders headers = new HttpHeaders();
@@ -56,16 +60,16 @@ public class URest {
 		try {
 			reponse = restTemplate.exchange(url, HttpMethod.GET, new HttpEntity<Object>(headers), responseType);
 		} catch (ResourceAccessException e) {
-			//log.error(METHOD + "ResourceAccessException-  " + e.getClass() + e.getMessage());
+			log.error(METHOD + "ResourceAccessException-  " + e.getClass() + e.getMessage());
 			throw new UtilityException(UConstant.BOT_IS_NOT_ACCESSIBLE);
 		} catch (HttpClientErrorException e) {
-			//log.error(METHOD + " HttpClientErrorException- {} " + e.getMessage());
+			log.error(METHOD + " HttpClientErrorException- {} " + e.getMessage());
 			if (e != null && e.getStatusCode() == HttpStatus.UNAUTHORIZED) {
 				UtilityException.throwErr(UConstant.UNAUTHORIZED_ACCESS);
 			}
 			throw new UtilityException(getErrorMessage(e.getResponseBodyAsString()));
 		} catch (RestClientException e) {
-			//log.error(METHOD + " RestClientException- ", e);
+			log.error(METHOD + " RestClientException- ", e);
 			throw new UtilityException(UConstant.INTERNAL_SERVER_ERROR_MESSAGE);
 		}
 
@@ -76,8 +80,8 @@ public class URest {
 			throw new UtilityException(getErrorMessage(Utility.getStr(reponse.getBody())));
 		}
 		
-		if(infolog){}
-		//log.info(METHOD + " End ---");
+		if(infolog)
+			log.info(METHOD + " End ---");
 		return (T) reponse.getBody();
 	}
 	
@@ -137,7 +141,7 @@ public class URest {
 	 */
 	public <T> T postRequest(String url, Object body, Class<T> responseType, MediaType mediaType) {
 		String METHOD = "postRequest()- ";
-		//log.info(METHOD + "Started  url " + url);
+		log.info(METHOD + "Started  url " + url);
 		ResponseEntity<T> reponse = null;
 
 		HttpHeaders headers = new HttpHeaders();
@@ -146,16 +150,16 @@ public class URest {
 		try {
 			reponse = restTemplate.exchange(url, HttpMethod.POST, new HttpEntity<Object>(body, headers), responseType);
 		} catch (ResourceAccessException e) {
-			//log.error(METHOD + "ResourceAccessException-  " + e.getClass() + e.getMessage());
+			log.error(METHOD + "ResourceAccessException-  " + e.getClass() + e.getMessage());
 			throw new UtilityException(UConstant.BOT_IS_NOT_ACCESSIBLE);
 		} catch (HttpClientErrorException e) {
-			//log.error(METHOD + " HttpClientErrorException- {} " + e.getMessage());
+			log.error(METHOD + " HttpClientErrorException- {} " + e.getMessage());
 			if (e != null && e.getStatusCode() == HttpStatus.UNAUTHORIZED) {
 				UtilityException.throwErr(UConstant.UNAUTHORIZED_ACCESS);
 			}
 			throw new UtilityException(getErrorMessage(e.getResponseBodyAsString()));
 		} catch (RestClientException e) {
-			//log.error(METHOD + " RestClientException- ", e);
+			log.error(METHOD + " RestClientException- ", e);
 			throw new UtilityException(UConstant.INTERNAL_SERVER_ERROR_MESSAGE);
 		}
 
@@ -166,7 +170,7 @@ public class URest {
 			throw new UtilityException(getErrorMessage(Utility.getStr(reponse.getBody())));
 		}
 
-		//log.info(METHOD + " End ---");
+		log.info(METHOD + " End ---");
 		return (T) reponse.getBody();
 	}
 
@@ -177,7 +181,7 @@ public class URest {
 	 * @return
 	 */
 	public static String getErrorMessage(String reponse) {
-		////log.info("Requested URL - Resonse - " + reponse);
+		log.info("Requested URL - Resonse - " + reponse);
 		if (Utility.isNullOrEmp(reponse)) {
 			return UConstant.INTERNAL_SERVER_ERROR_MESSAGE;
 		}
@@ -190,7 +194,7 @@ public class URest {
 				return str.asText();
 
 		} catch (Exception e) {
-			////log.error("While reading smart bot reponse " + reponse + "  " + e.getMessage());
+			log.error("While reading smart bot reponse " + reponse + "  " + e.getMessage());
 		}
 		return UConstant.INTERNAL_SERVER_ERROR_MESSAGE;
 	}
