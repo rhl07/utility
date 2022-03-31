@@ -14,7 +14,7 @@
 		<java-version>1.7</java-version>
 		<portlet-api.version>2.0</portlet-api.version>
 		<org.slf4j-version>1.7.10</org.slf4j-version>
-		<org.springframework-version>4.1.5.RELEASE</org.springframework-version>
+		<org.springframework-version>5.3.18</org.springframework-version>
 		<spring.data.version>1.7.1.RELEASE</spring.data.version>
 		<jackson-databind.version>2.8.7</jackson-databind.version>
 		<jackson.dataformat.properties.version>2.9.3</jackson.dataformat.properties.version>
